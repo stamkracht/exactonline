@@ -12,13 +12,13 @@ from ..http import binquote
 
 # Python23 compatibility helpers
 try:
-    unicode  # python2 only
+    str  # python2 only
 except NameError:
     to_binstr = (lambda x: x.encode('utf-8'))  # unistr-to-binstr
     to_unistr = str  # nonstr-to-unistr
 else:
     to_binstr = str
-    to_unistr = unicode  # noqa: non-str-to-unistr
+    to_unistr = str  # noqa: non-str-to-unistr
 
 
 class Manager(object):
@@ -70,7 +70,7 @@ class Manager(object):
     def filter(self, **kwargs):
         # kwargs = {'filter': "EntryDate+gt+datetime'2014-01-01'", 'top': 5}
         args = []
-        for key, value in kwargs.items():
+        for key, value in list(kwargs.items()):
             args.append('$%s=%s' % (
                 key, binquote(to_unistr(value))))
         if args:
@@ -107,7 +107,7 @@ class Manager(object):
 
     def _filter_append(self, kwargs, extra_filter):
         if 'filter' in kwargs:
-            kwargs['filter'] = u'(%s) and %s' % (kwargs['filter'],
+            kwargs['filter'] = '(%s) and %s' % (kwargs['filter'],
                                                  extra_filter)
         else:
             kwargs['filter'] = extra_filter

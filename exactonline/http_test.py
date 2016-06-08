@@ -194,7 +194,7 @@ class HttpTestCase(TestCase):
     # ; Python23 compatibility helpers
 
     try:
-        unicode  # python2
+        str  # python2
     except NameError:
         to_str = staticmethod(lambda x: x.decode('utf-8'))  # binstr-to-unistr
     else:

@@ -8,7 +8,7 @@ Copyright (C) 2015-2016 Walter Doekes, OSSO B.V.
 
 We may want to replace this with something simpler.
 """
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import socket
 import ssl
 import sys
@@ -18,9 +18,9 @@ try:
 except ImportError:  # python2.7.9-
     create_default_context = None
 try:
-    from http.client import HTTPConnection, HTTPS_PORT
+    from .http.client import HTTPConnection, HTTPS_PORT
 except ImportError:  # python2
-    from httplib import HTTPConnection, HTTPS_PORT
+    from http.client import HTTPConnection, HTTPS_PORT
 try:
     from urllib import request
 except ImportError:  # python2
@@ -28,8 +28,8 @@ except ImportError:  # python2
 try:
     from urllib.parse import urljoin, quote
 except ImportError:  # python2
-    from urllib import quote
-    from urlparse import urljoin
+    from urllib.parse import quote
+    from urllib.parse import urljoin
 
 # For older Python, use this. For newer Python, use nothing to get
 # libssl-selected files instead. You can choose to override this
@@ -226,9 +226,9 @@ def http_post(url, data=None, opt=opt_default):
     '''
     if isinstance(data, str):
         # Allow binstrings for data.
-        pass
+        data = data.encode('utf-8')
     elif data:
-        data = urllib.urlencode(data)
+        data = urllib.parse.urlencode(data).encode('utf-8')
     else:
         data = ''.encode('utf-8')  # ensure POST-mode
     return _http_request(url, method='POST', data=data, opt=opt)
@@ -241,9 +241,9 @@ def http_put(url, data=None, opt=opt_default):
     '''
     if isinstance(data, str):
         # Allow binstrings for data.
-        pass
+        data = data.encode('utf-8')
     elif data:
-        data = urllib.urlencode(data)
+        data = urllib.parse.urlencode(data)
     else:
         data = ''.encode('utf-8')  # ensure POST-mode
     return _http_request(url, method='PUT', data=data, opt=opt)

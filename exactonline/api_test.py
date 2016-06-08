@@ -40,7 +40,7 @@ class ApiTestCase(TestCase):
                     'refresh_token': 'REFRESH_TOKEN',
                 },
             }
-            for key, value in kwargs.items():
+            for key, value in list(kwargs.items()):
                 self._data[key].update(**value)
 
         def get_division(self):
@@ -74,6 +74,6 @@ class ApiTestCase(TestCase):
         jsondata = json.dumps(data)
         server = HttpTestServer('GET', '200', jsondata)
         api = self.get_api(server_port=server.port)
-        res = api.invoices.filter(filter=u"Currency eq '\u20ac'", top=5)
+        res = api.invoices.filter(filter="Currency eq '\u20ac'", top=5)
         server.join()
         self.assertEqual(res, data['d']['results'])

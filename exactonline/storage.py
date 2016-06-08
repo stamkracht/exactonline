@@ -46,7 +46,7 @@ Example ini file:
 try:
     from configparser import NoSectionError, NoOptionError, ConfigParser
 except ImportError:  # python2
-    from ConfigParser import (
+    from configparser import (
         NoSectionError, NoOptionError,
         SafeConfigParser as ConfigParserOldStyle)
 

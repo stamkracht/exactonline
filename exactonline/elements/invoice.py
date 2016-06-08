@@ -105,7 +105,7 @@ class ExactInvoice(ExactElement):
         total_amount_incl_vat = self.get_total_amount_incl_vat()
         total_vat = self.get_total_vat()
         created_date = self.get_created_date()
-        description = u'%s - %s, %s' % (invoice_number, customer.get_name(),
+        description = '%s - %s, %s' % (invoice_number, customer.get_name(),
                                         created_date.strftime('%m-%Y'))
 
         # Make sure the customer exists.

@@ -53,7 +53,7 @@ class ExactRawApi(object):
                       token_params)
 
         # Fire away!
-        url = self.storage.get_token_url().encode('utf-8')
+        url = self.storage.get_token_url()
         response = http_post(url, token_data, opt=opt_secure)
 
         # Validate and store the values.
@@ -79,7 +79,7 @@ class ExactRawApi(object):
                         refresh_params)
 
         # Fire away!
-        url = self.storage.get_refresh_url().encode('utf-8')
+        url = self.storage.get_refresh_url()
         response = http_post(url, refresh_data, opt=opt_secure)
 
         # Validate and store the values.
@@ -104,7 +104,7 @@ class ExactRawApi(object):
         response = self._rest_query(method, url, data)
 
         if method in ('DELETE', 'PUT'):
-            if response != '':
+            if response != b'':
                 raise ValueError('Expected empty data for %s operation: '
                                  'resource=%r, returned=%r' %
                                  (method, resource, response))
@@ -159,7 +159,7 @@ class ExactRawApi(object):
         #  "token_type":"bearer",
         #  "expires_in":"600",
         #  "refresh_token":"__1P!I.."}
-        decoded = json.loads(jsondata)
+        decoded = json.loads(jsondata.decode('utf-8'))
 
         # Validate the values.
         assert decoded['access_token']
